@@ -35,7 +35,7 @@ body {
     width: clamp(calc(0.84*320px),84vw,calc(0.84*425px));
     display: grid;
     grid-template-columns: auto auto auto;
-    grid-template-rows: repeat(6,auto);
+    grid-template-rows: repeat(3,auto) clamp(calc(0.05*320px), 5vw, calc(0.05*425px)) repeat(2,auto);
     row-gap:clamp(calc(320*0.035px), 3.5vw, calc(425*0.035px));
     align-content: start;
     align-items: center;
@@ -49,12 +49,16 @@ span {
     grid-column: span 3;
 }
 
-.input_label {
-    grid-row: 2;
-}
+
 
 .confirmation {
     grid-row: 4;
+    color: green;
+    font-weight: bold;
+}
+
+.invalid {
+    color: tomato;
 }
 
 input[type="button"] {
@@ -111,6 +115,7 @@ li {
 
 .no_value::placeholder {
     color: darkorange;
+    font-weight: bold;
 }
 
 @media screen and (min-width:600px) {
@@ -150,7 +155,7 @@ li {
         height: 100%;
         display: grid;
         grid-template-columns: auto auto auto auto;
-        grid-template-rows: repeat(6, auto);
+        grid-template-rows: repeat(2, auto) clamp(calc(0.04*600px), 4vw, calc(0.04*1440px)) repeat(2,auto);
         justify-items: space-between;
         align-content: start;
         align-items: center;
@@ -163,19 +168,16 @@ li {
         margin: clamp(calc(0.02*600px), 2vw, calc(0.02*1440px));
     }
     
-    .input_label {
-        grid-column: 1 / 3;
-        grid-row: 2;
-        padding: 0;
-        justify-self: end;
-        margin-right: clamp(calc(0.01*600px), 1vw, calc(0.01*1440px));
-    }
-    
     .confirmation {
         grid-column: span 4;
         grid-row: 3;
+        font-weight: bold;
+        color: green;
     }
     
+    .invalid {
+        color: tomato;
+    }
 
     .add_btn {
         grid-column: span 1;
@@ -192,7 +194,7 @@ li {
     
     input[type="text"] {
         height: clamp(calc(0.035*600px), 3.5vw, calc(0.035*1440px));
-        grid-column: span 2;
+        grid-column: span 4;
     }
     
     .filter {

@@ -1,4 +1,11 @@
+var validNum = 0;
+var invalidNum = 0;
+var duplicateRegNums = [];
+var invalidRegNums = [];
+
+
 function regNumFilter() {
+
 
     const towns = {
         'CJ' : 'Paarl',
@@ -39,11 +46,15 @@ function regNumFilter() {
         regList.forEach(function(x){
           if(x == reg) {
             invalidNum++;
+            duplicateRegNums.push(reg);
             validity = false;
+          } else {
+            validNum++;
           }
         });
       } else {
         invalidNum++;
+        invalidRegNums.push(reg);
         validity = false;
       }
       return validity;
@@ -63,7 +74,7 @@ function regNumFilter() {
         if (patNoSecondSpace.test(num)) {
   
             num = num.substring(0,6)+' '+num.substring(6);
-            alert(num);
+  
         }
         var patNoSpaces = /^(CAA\d{3}\d{3})$/;
         var patNoFirstSpace = /^(CAA\d{3}\s\d{3})$/;
@@ -82,10 +93,31 @@ function regNumFilter() {
         return num;
     }
 
+    function inputToList(str) {
+      str = str.toUpperCase();
+      var list = str.split(',');
+      list.forEach(function(value,i,list){
+        value = value.trim();
+        list[i] = spaceCheck(value);
+      });
+      return list;
+    }
+
+    function confirmationMsg() {
+      if (invalidNum == 0) {
+        return "Registration number successfully captured."
+      } else {
+        return "Invalid or duplicate input. Registration number not captured.";
+      }
+    }
+
+
     return {
         addToList,
         carsForTown,
         validityTest,
-        spaceCheck
+        spaceCheck,
+        inputToList,
+        confirmationMsg
     }
 }

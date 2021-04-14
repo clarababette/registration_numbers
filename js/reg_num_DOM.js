@@ -8,8 +8,6 @@ var addBtn = document.querySelector(".add_btn");
 var regDisplayList = document.querySelector(".reg_display_list");
 var townOptions = document.querySelector(".town");
 var resetBtn = document.querySelector(".reset_btn");
-var validNum = 0;
-var invalidNum = 0;
 var clearBtn = document.querySelector(".clear_filter_btn");
 
 function displayNum(regNum) {
@@ -26,30 +24,47 @@ regList.forEach(displayNum);
 addBtn.addEventListener("click", function(){
     invalidNum = 0;
     validNum = 0;
+    duplicateRegNums = [];
+    invalidRegNums = [];
     regEntered = document.querySelector(".reg_input").value;
-    document.querySelector(".confirmation").innerHTML = "";
-    if (document.querySelector(".reg_input").classList.contains("no_value")) {
-        document.querySelector(".reg_input").classList.remove("no_value");
-    }
     if (regEntered == "") {
         document.querySelector(".reg_input").classList.add("no_value");
+        setTimeout(function(){
+            document.querySelector(".reg_input").classList.remove("no_value");
+        }, 1500)
         return;
     }
-    regEntered = regEntered.toUpperCase();
-    var regEnteredList = regEntered.split(',');
-    regEnteredList.forEach(function(value){
-        var num = value.trim();
-        num = filter.spaceCheck(num);
-
+    
+    regEnteredList = filter.inputToList(regEntered);
+    regEnteredList.forEach(function(num,i){
+    setTimeout(function(){
         if(filter.validityTest(num)) {
             filter.addToList(num);
             displayNum(num);
+            if (document.querySelector(".confirmation").classList.contains("invalid")) {
+                document.querySelector(".confirmation").classList.remove("invalid");
+            }
+            document.querySelector(".confirmation").innerHTML = num + " was sucessfully captured.";
+        } else {
+            document.querySelector(".confirmation").classList.add("invalid");
+            document.querySelector(".confirmation").innerHTML = num + " is an invalid or duplicate input. Registration number not captured." ;
+            
         }  
-    });
-    document.querySelector(".reg_input").value = "";
-    validNum = regEnteredList.length - invalidNum;
-    document.querySelector(".confirmation").innerHTML = "Valid registrations added: " + validNum + " | Invalid/Duplicate registrations not added: " + invalidNum;
+    },1500*i)
+})
+
+setTimeout(function(){
     localStorage.setItem('regNumbers', regList.toString());
+    // alert(regList);
+    document.querySelector(".confirmation").innerHTML = "";
+}, 1500*(regEnteredList.length))
+document.querySelector(".reg_input").value = "";
+// if(invalidNum > 0){
+    // }
+    // document.querySelector(".confirmation").innerHTML = filter.confirmationMsg();
+    // setTimeout(function(){ 
+    // },2500);
+   
 });
 
 townOptions.onchange = function() {
@@ -67,6 +82,7 @@ resetBtn.addEventListener('click', function(){
     }
     localStorage.setItem('regNumbers', "");
     regList=[];
+    document.querySelector(".confirmation").innerHTML = "";
 });
 clearBtn.addEventListener('click', function(){
     while (regDisplayList.firstChild) {
