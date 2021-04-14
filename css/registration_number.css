@@ -93,7 +93,7 @@ ul {
     width: inherit;
     height: auto;
     row-gap: clamp(calc(0.04*320px), 4vw, calc(0.04*425px));
-    overflow: scroll;
+    
 }
 
 li {
