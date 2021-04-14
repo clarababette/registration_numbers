@@ -22,6 +22,11 @@ regList.forEach(displayNum);
 // regList = regStr.split(',');
 
 addBtn.addEventListener("click", function(){
+    while (regDisplayList.firstChild) {
+        regDisplayList.removeChild(regDisplayList.firstChild);
+    }
+    document.querySelector('.town').selectedIndex = 0;
+    regList.forEach(displayNum);
     invalidNum = 0;
     validNum = 0;
     duplicateRegNums = [];
