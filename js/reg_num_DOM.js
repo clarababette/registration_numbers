@@ -46,23 +46,27 @@ addBtn.addEventListener("click", function(){
         if(filter.validityTest(num)) {
             filter.addToList(num);
             displayNum(num);
-            if (document.querySelector(".confirmation").classList.contains("invalid")) {
-                document.querySelector(".confirmation").classList.remove("invalid");
-            }
+            document.querySelector(".confirmation").classList.add("valid");
             document.querySelector(".confirmation").innerHTML = num + " was sucessfully captured.";
         } else {
             document.querySelector(".confirmation").classList.add("invalid");
             document.querySelector(".confirmation").innerHTML = num + " is an invalid or duplicate input. Registration number not captured." ;
             
         }  
-    },1500*i)
+    },2000*i)
 })
 
 setTimeout(function(){
     localStorage.setItem('regNumbers', regList.toString());
     // alert(regList);
-    document.querySelector(".confirmation").innerHTML = "";
-}, 1500*(regEnteredList.length))
+    if (document.querySelector(".confirmation").classList.contains("invalid")) {
+        document.querySelector(".confirmation").classList.remove("invalid");
+    }
+    if (document.querySelector(".confirmation").classList.contains("valid")) {
+        document.querySelector(".confirmation").classList.remove("valid");
+    }
+    document.querySelector(".confirmation").innerHTML = "Enter a registration number.";
+}, 2000*(regEnteredList.length))
 document.querySelector(".reg_input").value = "";
 // if(invalidNum > 0){
     // }
@@ -87,7 +91,6 @@ resetBtn.addEventListener('click', function(){
     }
     localStorage.setItem('regNumbers', "");
     regList=[];
-    document.querySelector(".confirmation").innerHTML = "";
 });
 clearBtn.addEventListener('click', function(){
     while (regDisplayList.firstChild) {
