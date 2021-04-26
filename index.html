@@ -1,39 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/registration_number.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500&family=Neuton:wght@200;300&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/registration_number.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500&family=Neuton:wght@200;300&display=swap"
+      rel="stylesheet"
+    />
     <title>Registration Numbers</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>Western Cape Registration Numbers</h1>
-        <input type="text" class="reg_input" placeholder="eg. CA 797 920">
-        <span class="confirmation">Enter a registration number.</span>
-        <input class="add_btn" type="button" value="Add">
-        <input class="reset_btn" type="button" value="Reset">
-        <input class="clear_filter_btn" type="button" value="Clear filter">
-        <div class="filter">
-            Filter by town: <select class="town">
-                <option value="">Choose a town</option>
-                <option value="Bellville">Bellville</option>
-                <option value="Cape Town">Cape Town</option>
-                <option value="Kuilsriver">Kuilsriver</option>
-                <option value="Malmesbury">Malmesbury</option>
-                <option value="Paarl">Paarl</option>
-                <option value="Stellenbosch">Stellenbosch</option>
-            </select>
-        </div>
-        <ul class="reg_display_list">
-            
-        </ul>
+      <h1>Western Cape Registration Numbers</h1>
+      <input type="text" class="reg_input" placeholder="eg. CA 797 920" />
+      <span class="confirmation">Enter a registration number.</span>
+      <input class="add_btn" type="button" value="Add" />
+      <input class="reset_btn" type="button" value="Reset" />
+      <input class="clear_filter_btn" type="button" value="Clear filter" />
+      <div class="filter">
+        Filter by town:
+        <select class="town">
+          <option value="">Choose a town</option>
+          <option value="CY">Bellville</option>
+          <option value="CA">Cape Town</option>
+          <option value="CF">Kuilsriver</option>
+          <option value="CK">Malmesbury</option>
+          <option value="CJ">Paarl</option>
+          <option value="CL">Stellenbosch</option>
+        </select>
+      </div>
+      <ul class="reg_display_list"></ul>
     </div>
-</body>
-<script src="js/registration_numbers.js" charset="utf-8"></script>
-<script src="js/reg_num_DOM.js" charset="utf-8"></script>
+    <div class="container" id="regNumHandlebars"></div>
+
+    <script src="js/registration_numbers.js" charset="utf-8"></script>
+    <script src="js/reg_num_DOM.js" charset="utf-8"></script>
+    <script type="text/x-template" id="regNumTemplate">
+      <h1>Western Cape Registration Numbers</h1>
+      <input type="text" class="reg_input" id="reg_inputHB" placeholder="eg. CA 797 920" />
+      <span class="confirmation" id="confirmationHB">Enter a registration number.</span>
+      <input class="add_btn" id="add_btnHB" type="button" value="Add" />
+      <input class="reset_btn" id="reset_btnHB" type="button" value="Reset" />
+      <input class="clear_filter_btn" id="clear_filter_btnHB" type="button" value="Clear filter" />
+      <div class="filter" id="filterHB">
+          Filter by town:
+          <select class="town" id="townHB">
+              <option value="">Choose a town</option>
+              {{#each town}}
+              <option value={{@key}}>{{this}}</option>
+              {{/each}}
+          </select>
+      </div>
+      <ul class="reg_display_list" id="reg_display_listHB">
+          {{#each regNum}}
+              <li>{{this}}</li>
+          {{/each}}
+      </ul>
+    </script>
+  </body>
 </html>

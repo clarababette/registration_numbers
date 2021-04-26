@@ -1,9 +1,18 @@
-var regList = [];
-if(localStorage['regNumbers']) {
-    regList = localStorage.getItem('regNumbers').split(',')
+var regListWidgA = [];
+if (localStorage["regNumbers"]) {
+  regListWidgA = localStorage.getItem("regNumbers").split(",");
 }
 
-var filter = regNumFilter();
+var townsWidgA = {
+  CJ: "Paarl",
+  CY: "Bellville",
+  CL: "Stellenbosch",
+  CK: "Malmesbury",
+  CA: "Cape Town",
+  CF: "Kuilsriver",
+};
+
+var filter = regNumFilter(regListWidgA, townsWidgA);
 var addBtn = document.querySelector(".add_btn");
 var regDisplayList = document.querySelector(".reg_display_list");
 var townOptions = document.querySelector(".town");
@@ -11,92 +20,196 @@ var resetBtn = document.querySelector(".reset_btn");
 var clearBtn = document.querySelector(".clear_filter_btn");
 
 function displayNum(regNum) {
-    var plate = document.createElement("LI");
-    plate.innerHTML = regNum;
-    regDisplayList.insertBefore(plate,regDisplayList.firstChild);
+  var plate = document.createElement("LI");
+  plate.innerHTML = regNum;
+  regDisplayList.insertBefore(plate, regDisplayList.firstChild);
 }
 
-regList.forEach(displayNum);
+filter.getRegList().forEach(displayNum);
 
-// var regStr = "CA 797 920,CJ 698 624,CL 449 592,CJ 526 250,CY 661 955,CL 896 784,CA 231 420,CY 553 506,CY 934 492,CL 133 445,CY 743 838,CY 761 312,CA 352 427,CY 351 575,CJ 379 543,CL 446 216,CJ 249 428,CJ 502 372,CJ 485 753,CY 736 149,CA 514 651,CL 759 952,CJ 816 811,CJ 839 718,CL 945 589,XCU 833 L,GKP 858 L,HRH 916 EC,AVP 705 GP,SID 498 GP,FHQ 438 L,HII 263 L,DEV 531 L,GIF 578 MP,RFN 956 MP,KAX 219 GP,LDZ 269 GP,TJK 441 EC,HHB 675 EC,JEE 854 L,KCE 205 L,JGD 838 L,GSF 931 L,KJQ 491 MP,AXS 828 L,ILI 604 MP,PSY 394 MP,JVK 582 EC,HAC 282 L,VCD 721 MP"
-// regList = regStr.split(',');
+addBtn.addEventListener("click", function () {
+  while (regDisplayList.firstChild) {
+    regDisplayList.removeChild(regDisplayList.firstChild);
+  }
+  document.querySelector(".town").selectedIndex = 0;
+  filter.getRegList().forEach(displayNum);
+  regEntered = document.querySelector(".reg_input").value;
+  if (regEntered == "") {
+    document.querySelector(".reg_input").classList.add("no_value");
+    setTimeout(function () {
+      document.querySelector(".reg_input").classList.remove("no_value");
+    }, 1500);
+    return;
+  }
 
-addBtn.addEventListener("click", function(){
-    while (regDisplayList.firstChild) {
-        regDisplayList.removeChild(regDisplayList.firstChild);
-    }
-    document.querySelector('.town').selectedIndex = 0;
-    regList.forEach(displayNum);
-    invalidNum = 0;
-    validNum = 0;
-    duplicateRegNums = [];
-    invalidRegNums = [];
-    regEntered = document.querySelector(".reg_input").value;
-    if (regEntered == "") {
-        document.querySelector(".reg_input").classList.add("no_value");
-        setTimeout(function(){
-            document.querySelector(".reg_input").classList.remove("no_value");
-        }, 1500)
-        return;
-    }
-    
-    regEnteredList = filter.inputToList(regEntered);
-    regEnteredList.forEach(function(num,i){
-    setTimeout(function(){
-        if(filter.validityTest(num)) {
-            filter.addToList(num);
-            displayNum(num);
-            document.querySelector(".confirmation").classList.add("valid");
-            document.querySelector(".confirmation").innerHTML = num + " was sucessfully captured.";
-        } else {
-            document.querySelector(".confirmation").classList.add("invalid");
-            document.querySelector(".confirmation").innerHTML = num + " is an invalid or duplicate input. Registration number not captured." ;
-            
-        }  
-    },2000*i)
-})
+  regEnteredList = filter.inputToList(regEntered);
+  regEnteredList.forEach(function (num, i) {
+    setTimeout(function () {
+      if (filter.validityTest(num)) {
+        filter.addToList(num);
+        displayNum(num);
+        document.querySelector(".confirmation").classList.add("valid");
+        document.querySelector(".confirmation").innerHTML =
+          num + " was sucessfully captured.";
+      } else {
+        document.querySelector(".confirmation").classList.add("invalid");
+        document.querySelector(".confirmation").innerHTML =
+          num +
+          " is an invalid or duplicate input. Registration number not captured.";
+      }
+    }, 2000 * i);
+  });
 
-setTimeout(function(){
-    localStorage.setItem('regNumbers', regList.toString());
-    // alert(regList);
+  setTimeout(function () {
+    localStorage.setItem("regNumbers", filter.getRegList().toString());
+
     if (document.querySelector(".confirmation").classList.contains("invalid")) {
-        document.querySelector(".confirmation").classList.remove("invalid");
+      document.querySelector(".confirmation").classList.remove("invalid");
     }
     if (document.querySelector(".confirmation").classList.contains("valid")) {
-        document.querySelector(".confirmation").classList.remove("valid");
+      document.querySelector(".confirmation").classList.remove("valid");
     }
-    document.querySelector(".confirmation").innerHTML = "Enter a registration number.";
-}, 2000*(regEnteredList.length))
-document.querySelector(".reg_input").value = "";
-// if(invalidNum > 0){
-    // }
-    // document.querySelector(".confirmation").innerHTML = filter.confirmationMsg();
-    // setTimeout(function(){ 
-    // },2500);
-   
+    document.querySelector(".confirmation").innerHTML =
+      "Enter a registration number.";
+  }, 2000 * regEnteredList.length);
+  document.querySelector(".reg_input").value = "";
 });
 
-townOptions.onchange = function() {
-    while (regDisplayList.firstChild) {
-        regDisplayList.removeChild(regDisplayList.firstChild);
-    }
-    var townSelected = document.querySelector('.town').selectedIndex;
-    var townList = filter.carsForTown(townOptions.options[townSelected].value);
-    townList.forEach(displayNum);
+townOptions.onchange = function () {
+  while (regDisplayList.firstChild) {
+    regDisplayList.removeChild(regDisplayList.firstChild);
+  }
+  var townSelected = document.querySelector(".town").selectedIndex;
+  var townList = filter.carsForTown(townOptions.options[townSelected].value);
+  townList.forEach(displayNum);
+};
+
+resetBtn.addEventListener("click", function () {
+  while (regDisplayList.firstChild) {
+    regDisplayList.removeChild(regDisplayList.firstChild);
+  }
+  localStorage.setItem("regNumbers", "");
+  regList = [];
+});
+clearBtn.addEventListener("click", function () {
+  while (regDisplayList.firstChild) {
+    regDisplayList.removeChild(regDisplayList.firstChild);
+  }
+  document.querySelector(".town").selectedIndex = 0;
+  filter.getRegList().forEach(displayNum);
+});
+
+//Handlebars Widget
+
+var regWidg = {
+  town: {
+    CJ: "Paarl",
+    CY: "Bellville",
+    CL: "Stellenbosch",
+    CK: "Malmesbury",
+    CA: "Cape Town",
+    CF: "Kuilsriver",
+  },
+  regNum: [],
+};
+if (localStorage["regNumbersHB"]) {
+  regWidg.regNum = localStorage.getItem("regNumbersHB").split(",");
 }
+var filterHB = regNumFilter(regWidg.regNum, regWidg.town);
 
-resetBtn.addEventListener('click', function(){
+document.addEventListener("DOMContentLoaded", function () {
+  var templateSource = document.querySelector("#regNumTemplate").innerHTML;
+  var regNumTemplate = Handlebars.compile(templateSource);
+  var regNum = document.querySelector("#regNumHandlebars");
+  regNum.innerHTML = regNumTemplate(regWidg);
+  var addBtn = document.querySelector("#add_btnHB");
+  var regDisplayList = document.querySelector("#reg_display_listHB");
+  var townOptions = document.querySelector("#townHB");
+  var resetBtn = document.querySelector("#reset_btnHB");
+  var clearBtn = document.querySelector("#clear_filter_btnHB");
+
+  function displayNum(regNum) {
+    var plate = document.createElement("LI");
+    plate.innerHTML = regNum;
+    regDisplayList.insertBefore(plate, regDisplayList.firstChild);
+  }
+
+  addBtn.addEventListener("click", function () {
+    let regList = filterHB.getRegList();
     while (regDisplayList.firstChild) {
-        regDisplayList.removeChild(regDisplayList.firstChild);
+      regDisplayList.removeChild(regDisplayList.firstChild);
     }
-    localStorage.setItem('regNumbers', "");
-    regList=[];
-});
-clearBtn.addEventListener('click', function(){
-    while (regDisplayList.firstChild) {
-        regDisplayList.removeChild(regDisplayList.firstChild);
-    }
-    document.querySelector('.town').selectedIndex = 0;
+    document.querySelector("#townHB").selectedIndex = 0;
     regList.forEach(displayNum);
-});
+    regEntered = document.querySelector("#reg_inputHB").value;
+    if (regEntered == "") {
+      document.querySelector("#reg_inputHB").classList.add("no_value");
+      setTimeout(function () {
+        document.querySelector("#reg_inputHB").classList.remove("no_value");
+      }, 1500);
+      return;
+    }
 
+    regEnteredList = filterHB.inputToList(regEntered);
+    regEnteredList.forEach(function (num, i) {
+      setTimeout(function () {
+        if (filterHB.validityTest(num)) {
+          filterHB.addToList(num);
+          displayNum(num);
+          document.querySelector("#confirmationHB").classList.add("valid");
+          document.querySelector("#confirmationHB").innerHTML =
+            num + " was sucessfully captured.";
+        } else {
+          document.querySelector("#confirmationHB").classList.add("invalid");
+          document.querySelector("#confirmationHB").innerHTML =
+            num +
+            " is an invalid or duplicate input. Registration number not captured.";
+        }
+      }, 2000 * i);
+    });
+
+    setTimeout(function () {
+      localStorage.setItem("regNumbersHB", filterHB.getRegList().toString());
+      if (
+        document.querySelector("#confirmationHB").classList.contains("invalid")
+      ) {
+        document.querySelector("#confirmationHB").classList.remove("invalid");
+      }
+      if (
+        document.querySelector("#confirmationHB").classList.contains("valid")
+      ) {
+        document.querySelector("#confirmationHB").classList.remove("valid");
+      }
+      document.querySelector("#confirmationHB").innerHTML =
+        "Enter a registration number.";
+    }, 2000 * regEnteredList.length);
+    document.querySelector("#reg_inputHB").value = "";
+  });
+
+  townOptions.onchange = function () {
+    while (regDisplayList.firstChild) {
+      regDisplayList.removeChild(regDisplayList.firstChild);
+    }
+    var townSelected = document.querySelector("#townHB").selectedIndex;
+    var townList = filterHB.carsForTown(
+      townOptions.options[townSelected].value
+    );
+
+    townList.forEach(displayNum);
+  };
+
+  resetBtn.addEventListener("click", function () {
+    while (regDisplayList.firstChild) {
+      regDisplayList.removeChild(regDisplayList.firstChild);
+    }
+    localStorage.setItem("regNumbersHB", "");
+    regList = [];
+  });
+  clearBtn.addEventListener("click", function () {
+    while (regDisplayList.firstChild) {
+      regDisplayList.removeChild(regDisplayList.firstChild);
+    }
+    document.querySelector("#townHB").selectedIndex = 0;
+    filterHB.getRegList().forEach(displayNum);
+  });
+});
