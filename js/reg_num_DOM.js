@@ -88,8 +88,9 @@ resetBtn.addEventListener("click", function () {
   while (regDisplayList.firstChild) {
     regDisplayList.removeChild(regDisplayList.firstChild);
   }
-  localStorage.setItem("regNumbers", "");
+  localStorage.removeItem("regNumbers");
   regListWidgA = [];
+  filter = regNumFilter(regListWidgA, townsWidgA);
 });
 clearBtn.addEventListener("click", function () {
   while (regDisplayList.firstChild) {
@@ -202,8 +203,9 @@ document.addEventListener("DOMContentLoaded", function () {
     while (regDisplayList.firstChild) {
       regDisplayList.removeChild(regDisplayList.firstChild);
     }
-    localStorage.setItem("regNumbersHB", "");
-    regList = [];
+    localStorage.removeItem("regNumbersHB");
+    regWidg.regNum = [];
+    filterHB = regNumFilter(regWidg.regNum, regWidg.town);
   });
   clearBtn.addEventListener("click", function () {
     while (regDisplayList.firstChild) {
