@@ -89,7 +89,7 @@ resetBtn.addEventListener("click", function () {
     regDisplayList.removeChild(regDisplayList.firstChild);
   }
   localStorage.setItem("regNumbers", "");
-  regList = [];
+  regListWidgA = [];
 });
 clearBtn.addEventListener("click", function () {
   while (regDisplayList.firstChild) {
