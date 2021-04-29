@@ -49,13 +49,10 @@ addBtn.addEventListener("click", function () {
         filter.addToList(num);
         displayNum(num);
         document.querySelector(".confirmation").classList.add("valid");
-        document.querySelector(".confirmation").innerHTML =
-          num + " was sucessfully captured.";
+        document.querySelector(".confirmation").innerHTML = num + " was sucessfully captured.";
       } else {
         document.querySelector(".confirmation").classList.add("invalid");
-        document.querySelector(".confirmation").innerHTML =
-          num +
-          " is an invalid or duplicate input. Registration number not captured.";
+        document.querySelector(".confirmation").innerHTML = num + " is an invalid or duplicate input. Registration number not captured.";
       }
     }, 2000 * i);
   });
@@ -69,8 +66,7 @@ addBtn.addEventListener("click", function () {
     if (document.querySelector(".confirmation").classList.contains("valid")) {
       document.querySelector(".confirmation").classList.remove("valid");
     }
-    document.querySelector(".confirmation").innerHTML =
-      "Enter a registration number.";
+    document.querySelector(".confirmation").innerHTML = "Enter a registration number.";
   }, 2000 * regEnteredList.length);
   document.querySelector(".reg_input").value = "";
 });
@@ -158,31 +154,23 @@ document.addEventListener("DOMContentLoaded", function () {
           filterHB.addToList(num);
           displayNum(num);
           document.querySelector("#confirmationHB").classList.add("valid");
-          document.querySelector("#confirmationHB").innerHTML =
-            num + " was sucessfully captured.";
+          document.querySelector("#confirmationHB").innerHTML = num + " was sucessfully captured.";
         } else {
           document.querySelector("#confirmationHB").classList.add("invalid");
-          document.querySelector("#confirmationHB").innerHTML =
-            num +
-            " is an invalid or duplicate input. Registration number not captured.";
+          document.querySelector("#confirmationHB").innerHTML = num + " is an invalid or duplicate input. Registration number not captured.";
         }
       }, 2000 * i);
     });
 
     setTimeout(function () {
       localStorage.setItem("regNumbersHB", filterHB.getRegList().toString());
-      if (
-        document.querySelector("#confirmationHB").classList.contains("invalid")
-      ) {
+      if (document.querySelector("#confirmationHB").classList.contains("invalid")) {
         document.querySelector("#confirmationHB").classList.remove("invalid");
       }
-      if (
-        document.querySelector("#confirmationHB").classList.contains("valid")
-      ) {
+      if (document.querySelector("#confirmationHB").classList.contains("valid")) {
         document.querySelector("#confirmationHB").classList.remove("valid");
       }
-      document.querySelector("#confirmationHB").innerHTML =
-        "Enter a registration number.";
+      document.querySelector("#confirmationHB").innerHTML = "Enter a registration number.";
     }, 2000 * regEnteredList.length);
     document.querySelector("#reg_inputHB").value = "";
   });
@@ -192,9 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
       regDisplayList.removeChild(regDisplayList.firstChild);
     }
     var townSelected = document.querySelector("#townHB").selectedIndex;
-    var townList = filterHB.carsForTown(
-      townOptions.options[townSelected].value
-    );
+    var townList = filterHB.carsForTown(townOptions.options[townSelected].value);
 
     townList.forEach(displayNum);
   };

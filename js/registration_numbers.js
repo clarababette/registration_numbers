@@ -23,7 +23,6 @@ function regNumFilter(thisRegList, theseTowns) {
   function validityTest(reg) {
     var pattern = /^((CJ|CY|CL|CK|CA|CAA|CF)\s\d{3}\s\d{3})$/;
     var patternB = /^((CJ|CY|CL|CK|CA|CAA|CF)\s\d{3}-\d{3})$/;
-    // var pattern = /^((CJ|CY|CL|CK|CA|CAA|CF)\s\d{3}\s\d{3})$/;
     var validity = true;
 
     if (pattern.test(reg) | patternB.test(reg)) {
@@ -48,16 +47,9 @@ function regNumFilter(thisRegList, theseTowns) {
     num = str.replace(/ /g, "");
     var patNoSpaces = /^((CJ|CY|CL|CK|CA|CF)\d{3}\d{3})$/;
     var patDash = /^((CJ|CY|CL|CK|CA|CF)\d{3}-\d{3})$/;
-    // var patNoFirstSpace = /^((CJ|CY|CL|CK|CA|CF)\d{3}\s\d{3})$/;
-    // var patNoSecondSpace = /^((CJ|CY|CL|CK|CA|CF)\s\d{3}\d{3})$/;
 
     if (patNoSpaces.test(num)) {
-      num =
-        num.substring(0, 2) +
-        " " +
-        num.substring(2, 5) +
-        " " +
-        num.substring(5);
+      num = num.substring(0, 2) + " " + num.substring(2, 5) + " " + num.substring(5);
     }
     if (patDash.test(num)) {
       num = num.substring(0, 2) + " " + num.substring(2);
@@ -66,26 +58,12 @@ function regNumFilter(thisRegList, theseTowns) {
     patNoSpaces = /^(CAA\d{3}\d{3})$/;
     patDash = /^(CAA\d{3}-\d{3})$/;
 
-    // var patNoFirstSpace = /^(CAA\d{3}\s\d{3})$/;
-    // var patNoSecondSpace = /^(CAA\s\d{3}\d{3})$/;
-
     if (patNoSpaces.test(num)) {
-      num =
-        num.substring(0, 3) +
-        " " +
-        num.substring(3, 6) +
-        " " +
-        num.substring(6);
+      num = num.substring(0, 3) + " " + num.substring(3, 6) + " " + num.substring(6);
     }
     if (patDash.test(num)) {
       num = num.substring(0, 3) + " " + num.substring(3);
     }
-    // if (patNoFirstSpace.test(num)) {
-    //     num = num.substring(0,3)+' '+num.substring(3);
-    // }
-    // if (patNoSecondSpace.test(num)) {
-    //     num = num.substring(0,7)+' '+num.substring(7);
-    // }
 
     return num;
   }
